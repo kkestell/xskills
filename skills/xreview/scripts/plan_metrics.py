@@ -74,7 +74,7 @@ def report(plans, plan=None, accepted=None):
     result = {"quantile_method": "inclusive", "historical_words": distribution(history),
               "historical_plans": history, "reference_words": stats,
               "reference_plans": references, "active_target": active,
-              "limitations": ["Length is not work size or decision completeness.",
+              "limitations": ["Length is not work size or exposition adequacy.",
                               "Historical quartiles are descriptive, not quality certification.",
                               "No scalar weights or words-per-obligation rule are validated."]}
     if plan:
@@ -84,7 +84,7 @@ def report(plans, plan=None, accepted=None):
                                "above" if words > active["max_words"] else "inside")
         current["length_followup"] = {"below": ["skip-plan", "expand-guidance"],
                                       "above": ["split-work", "trim-detail"],
-                                      "inside": ["inspect-work-size-and-decisions"]}[current["position"]]
+                                      "inside": ["assess-work-size-and-exposition"]}[current["position"]]
         result["current_plan"] = {"path": str(plan), **current}
     return result
 

@@ -107,8 +107,10 @@ to a settled shared design avoids duplication; “see roadmap” does not bound 
 ## Check before handoff
 
 Apply xreview's plan rubric (use `xreview plan PATH` if requested, otherwise read
-its `references/plan-review.md`). This self-check is not independent acceptance
-under xauto; the parent dispatches a separate plan reviewer.
+its `references/plan-review.md`). This supplied-material normalization check does
+not validate engineering correctness or readiness and does not replace the
+planner's investigation above. Under xauto the parent dispatches a separate
+normalization assessor; this self-check is not independent acceptance.
 After writing an execution plan, run its bundled
 `scripts/plan_metrics.py --plans .agents/plans --plan PATH` using the script's
 actual installed path. Use a preselected curated reference manifest if one

@@ -29,8 +29,9 @@ file; preserve earlier findings, reviewed revisions and dispositions. Git commit
 preserve changes to plans and logs. Do not overwrite a review round with a later
 approval. An existing input outside this layout may be read in place; write new
 records here, recording its exact path. Adopt its ID only if it is unambiguous.
-Use the latest applicable review and recorded finding dispositions for readiness;
+Use the latest applicable review and recorded finding dispositions for its mode;
 do not select an older favorable verdict or leave required corrections unresolved.
+Plan acceptance addresses normalization only, not engineering readiness.
 
 For split work, assign each execution unit its own ID. A shared design lists all
 units, dependencies, contracts and the mapping to the entire requested outcome.
@@ -68,9 +69,11 @@ additional run-manifest format is required.
 Keep records focused on what the next reader needs. The plan owns the design;
 the log owns changes, deviations and verification; reviews own findings and
 independent assessment. Link to existing explanations rather than rewriting them
-in every artifact. A no-findings review needs a verdict, exact anchors, a brief
-justification of the tricky invariants, checks/evidence and limitations—not a
-second implementation walkthrough. Expand for substantive findings or necessary
+in every artifact. A no-findings plan assessment needs both axes, actions, concise
+supplied-material evidence, metric/target sources, exact anchors and limitations.
+A no-findings work review needs a verdict, exact anchors, a brief justification
+of the tricky invariants, checks/evidence and limitations—not a second
+implementation walkthrough. Expand for substantive findings or necessary
 proof, not to satisfy a report-length quota. Preserve all revision anchors,
 consequential constraints and unresolved finding dispositions when shortening.
 
@@ -91,18 +94,26 @@ reference or the native conversation and relevant tool result, without copying
 entire successful command outputs into each review.
 
 **Plan review round:** task ID, mode `plan`, author, exact plan path and
-`git hash-object -- PATH` blob, **Guidance blobs** (paths and hashes of linked
-local shared designs and their transitive execution guidance), source HEAD,
-findings, actions and verdict. Hash the actual inputs read, not just link text.
+`git hash-object -- PATH` blob, supplied request/shared-guidance input identities,
+**Guidance blobs** (paths and hashes of supplied local shared designs and their
+transitive execution guidance), source HEAD, metric/target sources, both axes,
+actions, evidence and
+limitations. Input loading, hashing, metrics and record saving are outside the
+single-prompt assessment. Hash the actual inputs supplied, not just link text;
+record unsupplied references as limitations, not as proven omissions. Do not
+investigate source, contracts, invariants or test feasibility in plan assessment.
+Its `accept` is normalization only, not a correctness/readiness verdict.
 After corrections, the parent appends an **Execution decision**: author, finding
 dispositions and evidence, final plan and Guidance blobs, and `proceed` or
 `blocked`. Preserve the independent review's original verdict and anchors. The
 parent verifies corrections; do not imply independent approval of unseen edits.
 Before execution, compare the plan and guidance set with this decision (or an
 unchanged accepted review). Changed guidance needs an impact/correction check,
-not automatic independent re-review. Further independent assessment is warranted
-only for a named consequential question the existing review and parent check
-cannot settle; keep it focused on that question rather than restarting the gate.
+not automatic independent re-review. Further normalization assessment is warranted
+only for a named size/detail question the existing assessment and parent check
+cannot settle. Engineering questions remain with planning/implementation and
+work review, not a general plan-correctness gate. The planner still owns the
+ready status; the parent must not infer it from normalization acceptance.
 
 **Work review round:** task ID, mode `work`, author, work-log path, fixed Code
 base and reviewed Code head, verification evidence, numbered findings with
@@ -145,7 +156,8 @@ The normal xauto sequence is:
     corrections are needed, planner revises and parent commits a new `plan`
     revision. Parent verifies the corrections and records/commits its execution
     decision (`plan-review`); no automatic review loop. No implementation with
-    unresolved consequential findings or mismatched plan/guidance anchors.
+    unresolved normalization corrections, a blocked plan or mismatched
+    plan/guidance anchors. Normalization is not engineering certification.
 3. xwork implements and verifies, then commits **code/tests** (`work`, or `fix`
    for a review repair). Save the resulting full commit ID as Code head.
 4. xwork writes/updates the work log with that known Code head and commits the
@@ -173,7 +185,7 @@ Use the one actual stage value, not the pipe-separated alternatives. A shared
 design commit may name multiple `X-Task` trailers for its units. Do not squash
 away these stage boundaries merely for tidiness.
 
-### Verification ownership and reuse
+### Verification ownership and reuse (implementation and work review)
 
 xwork owns completion of required plan/repository checks. Independent review
 means independent inspection and judgment, not automatic repetition of every

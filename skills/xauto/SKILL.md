@@ -28,8 +28,9 @@ Do not run an unrelated kauto workflow because of a name typo in a request.
    orchestrated workflow is unavailable; do not silently run every role inline.
 4. Inherit model/harness/effort unless the user or applicable instructions select
    them. Use fresh reviewer context, not a fork containing the author's private
-   reasoning. The reviewer may see the request, code, artifacts and prior public
-   findings, but is not the worker that wrote the reviewed plan/implementation.
+   reasoning. A plan assessor receives only the prepared plan/request/shared
+   guidance and metrics; a work reviewer may inspect code and prior public findings.
+   Neither is the worker that wrote the reviewed plan/implementation.
 5. Capture the parent's session provenance using the shared contract. Request
    each worker's coordinator ID and native conversation ID in its handoff;
    preserve them in the work log before cleanup, not just transient worker names.
@@ -49,25 +50,35 @@ independent and integration/review ownership is explicit. Confirm each child's
 actual directory/HEAD; integrate isolated-worker handoff commits before the next
 stage, as described in the shared contract. Never delete an untransferred result.
 
-## Plan → review the plan
+## Plan → normalize the plan
 
 - Start a planner with `xplan <request>` and no production-code edit authority.
   The planner researches tricky questions, settles engineering decisions and
   returns ready plans, a tiny-task brief, or concrete blockers.
 - Inspect the returned artifacts and coverage. Commit plan/shared-design records
   as `plan`, then send each execution plan to an independent worker using
-  **`xreview plan .agents/plans/ID.md`**. Commit its review round as `plan-review`.
+  **`xreview plan .agents/plans/ID.md`**. Supply the request/shared guidance,
+  including linked shared designs' transitive execution guidance, and precomputed
+  metrics, with exact input anchors. Keep file loading, measurement and report
+  saving outside the one-pass, tool-free assessment described by
+  xreview. Do not ask this assessor to inspect repositories, validate design or
+  test feasibility, or certify readiness. The skill harness cannot enforce a
+  single isolated model call; disclose that limitation. Commit its normalization
+  round as `plan-review`.
 - For findings, return a concrete correction assignment to the planner. Commit
   the revised plan. The parent checks the corrections against the findings and
   relevant evidence, records their disposition and the final plan/guidance blobs,
-  and proceeds when no consequential defect remains. This is the parent's
+  and proceeds when supported normalization corrections are resolved and the
+  planner has supplied a ready plan. Normalization `accept` alone does not
+  establish engineering correctness or readiness. This is the parent's
   execution decision, not a claim that the reviewer approved unseen revisions.
   Do not send every revision through another full plan review. Additional
-  independent assessment needs a specific consequential question that the prior
-  review and correction check cannot settle; name that question and request only
-  the assessment needed. Wording, metadata and routine corrections do not justify
-  restarting review. Shared-design edits require checking affected units, not
-  automatically commissioning another review of each one.
+  normalization assessment needs a specific size/detail question that the prior
+  assessment and correction check cannot settle; name it and request only that
+  assessment. Engineering questions go to the planner, not this check.
+  Wording, metadata and routine corrections do not justify restarting review.
+  Shared-design edits require checking affected units, not automatically
+  commissioning another review of each one.
 - For truly tiny work, retain the planner's bounded brief for xwork and skip the
   separate plan/review artifacts; the later work log records the reason. Do not
   bypass normalization by calling a large unresolved assignment a brief.
@@ -78,10 +89,11 @@ stage, as described in the shared contract. Never delete an untransferred result
 ## Work → review the implementation
 
 - Dispatch an implementer with **`xwork .agents/plans/ID.md`**, or the explicit
-  tiny-task brief. Supply the accepted review/plan and linked-guidance blobs.
-  Authorize only task-owned
-  code and log commits. xwork records a fixed Code base, commits verified code,
-  then separately commits its log with a known Code head.
+  tiny-task brief. Supply the normalized plan, execution decision (or unchanged
+  normalization acceptance), and linked-guidance blobs. Acceptance is not proof
+  that the implementation design has been independently validated.
+  Authorize only task-owned code and log commits. xwork records a fixed Code base,
+  commits verified code, then separately commits its log with a known Code head.
 - Check the handoff against Git and the recorded test output; a child's “done”
   message is not evidence of the right tree, completed checks or committed files.
   Resolve integration mappings and use task-checkout hashes in the final log.
@@ -102,8 +114,9 @@ stage, as described in the shared contract. Never delete an untransferred result
   independent of the author; no role may approve code it just wrote.
 - If implementation exposes an invalid design, route the decision back through
   the planner and parent before continuing. Apply the same correction check to
-  affected dependent units; additional independent assessment needs a specific
-  consequential uncertainty, not merely a changed plan blob.
+  affected dependent units; additional normalization assessment needs a named
+  size/detail uncertainty, not merely a changed plan blob. Design validation
+  remains with planning/implementation and the independent work review.
   Do not let xwork silently expand scope or leave the hard choice until coding.
 
 ## Resolve findings and finish honestly

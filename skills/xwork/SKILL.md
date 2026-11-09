@@ -16,10 +16,10 @@ the assignment or claim an independent review of its own work.
   `.agents/plans/`; do not pick the newest plan. If ambiguous, ask.
 - Read repository instructions, the request, full plan, linked shared design and
   dependencies. Reuse the assigned task ID. Check the parent's execution decision
-  (or an unchanged accepted review) against the current plan blob and all linked
-  **Guidance blobs**. If they differ, return the changed inputs to the parent for
-  an impact/correction check before xauto execution. A changed blob alone is not
-  a reason to commission another independent review.
+  (or an unchanged accepted normalization assessment) against the current plan
+  blob and all linked **Guidance blobs**. If they differ, return the changed inputs
+  to the parent for an impact/correction check before xauto execution. A changed
+  blob alone is not a reason to commission another independent review.
 - Standalone xwork may execute a ready user-supplied plan without a separate
   review; state that review was not supplied. Do not execute a blocked plan or
   invent answers to its consequential open decisions.
@@ -44,8 +44,9 @@ the assignment or claim an independent review of its own work.
    decision to the planner/parent. Do not choose a materially different design
    and conceal it as an implementation detail. The parent must check the amended
    guidance and record its execution decision before resuming under xauto;
-   additional independent assessment follows the shared contract's evidence-based
-   rule. Record deviations and why they were necessary.
+   additional normalization assessment follows the shared contract's size/detail
+   rule, not a design-certification gate. Record deviations and why they were
+   necessary.
 3. Add meaningful tests for required behavior and regressions. Confirm that test
    scenarios are supported by actual syntax, scope/lifetime rules and test APIs;
    an impossible or unspecified-behavior oracle proves nothing.
