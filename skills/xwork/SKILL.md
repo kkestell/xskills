@@ -15,14 +15,9 @@ the assignment or claim an independent review of its own work.
 - Resolve the supplied filename exactly. A bare filename may be resolved in
   `.agents/plans/`; do not pick the newest plan. If ambiguous, ask.
 - Read repository instructions, the request, full plan, linked shared design and
-  dependencies. Reuse the assigned task ID. Check the parent's execution decision
-  (or an unchanged accepted review) against the current plan blob and all linked
-  **Guidance blobs**. If they differ, return the changed inputs to the parent for
-  an impact/correction check before xauto execution. A changed blob alone is not
-  a reason to commission another independent review.
-- Standalone xwork may execute a ready user-supplied plan without a separate
-  review; state that review was not supplied. Do not execute a blocked plan or
-  invent answers to its consequential open decisions.
+  dependencies. Reuse the assigned task ID. Record the plan blob and all linked
+  **Guidance blobs** as read. Do not execute a blocked plan or invent answers to
+  its consequential open decisions.
 - For an explicit brief (`xwork --brief <task brief>` or the parent's equivalent
   delegation), preserve the full outcome, constraints, checks and skip-planning
   reason in the work log. Do not create a ceremonial plan. If inspection reveals
@@ -42,10 +37,8 @@ the assignment or claim an independent review of its own work.
 2. Resolve routine coding details locally. If evidence invalidates a consequential
    decision, stop that affected work and return the concrete evidence and required
    decision to the planner/parent. Do not choose a materially different design
-   and conceal it as an implementation detail. The parent must check the amended
-   guidance and record its execution decision before resuming under xauto;
-   additional independent assessment follows the shared contract's evidence-based
-   rule. Record deviations and why they were necessary.
+   and conceal it as an implementation detail. Under xauto, resume only after the
+   parent supplies amended guidance. Record deviations and why they were necessary.
 3. Add meaningful tests for required behavior and regressions. Confirm that test
    scenarios are supported by actual syntax, scope/lifetime rules and test APIs;
    an impossible or unspecified-behavior oracle proves nothing.
@@ -88,4 +81,4 @@ push, force, amend unrelated commits or discard user changes.
 Return task ID, exact plan/brief and log paths, Code base/head, code/log commit
 IDs, verification results, deviations, session provenance and blockers before
 the parent ends the worker. Await independent
-`xreview work <work log filename>`; do not mark the task `complete` yourself.
+`xreview <work log filename>`; do not mark the task `complete` yourself.

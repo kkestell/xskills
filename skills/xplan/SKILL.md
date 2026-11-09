@@ -1,6 +1,6 @@
 ---
 name: xplan
-description: Research a code or behavior change and write a detailed, implementation-ready execution plan with consequential engineering decisions resolved. Use when the user invokes xplan or explicitly asks for this planning workflow. Do not implement the change. Pair with xreview to check work size and specification detail before handoff.
+description: Research a code or behavior change and write a detailed, implementation-ready execution plan with consequential engineering decisions resolved. Use when the user invokes xplan or explicitly asks for this planning workflow. Do not implement the change.
 ---
 
 # Implementation-ready planning
@@ -48,7 +48,7 @@ while declaring the plan ready. Research the specific missing evidence first.
 
 ## Bound the execution assignment
 
-Read `../xreview/references/normalization.md` for the shared size/detail rubric
+Read `references/normalization.md` for the size/detail rubric
 and experimental numerical targets.
 
 Inventory substantive implementation and test deliverables independently of
@@ -106,10 +106,7 @@ to a settled shared design avoids duplication; “see roadmap” does not bound 
 
 ## Check before handoff
 
-Apply xreview's plan rubric (use `xreview plan PATH` if requested, otherwise read
-its `references/plan-review.md`). This self-check is not independent acceptance
-under xauto; the parent dispatches a separate plan reviewer.
-After writing an execution plan, run its bundled
+After writing an execution plan, run the bundled
 `scripts/plan_metrics.py --plans .agents/plans --plan PATH` using the script's
 actual installed path. Use a preselected curated reference manifest if one
 exists. Measure the saved text rather than guessing its word count; if tools

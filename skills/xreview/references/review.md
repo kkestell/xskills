@@ -1,9 +1,9 @@
-# Work review mode: review the implementation, not its story
+# Review the implementation, not its story
 
 ## Establish the exact change
 
-Read the work log, original request or preserved brief, plan and accepted plan
-review when supplied, referenced design/dependencies, and repository instructions.
+Read the work log, original request or preserved brief, plan when supplied,
+referenced design/dependencies, and repository instructions.
 Confirm the task ID and repository. Extract full **Code base** and **Code head**
 commit IDs from the log; verify that both exist and base is an ancestor of head.
 For missing or ambiguous anchors, ask the caller to establish them. Do not infer
@@ -57,12 +57,11 @@ read-only view or isolated checkout for historical inspection, and disclose it.
    not routinely rerun both focused repetitions and a full suite/build. Inspect
    docs-only changes without builds unless instructions require them. Missing
    usable evidence for a required check must be obtained, not waived.
-5. **History and handoff:** verify the accepted plan and linked-guidance blobs,
-   fixed original base,
-   full implementation range, actual commits, and log's scope/check claims.
-   Separate missing implementation, an implementation defect despite clear
-   guidance, incorrect plan guidance, and missing evidence. No word-count target
-   applies to code, work logs or implementation-review reports.
+5. **History and handoff:** verify the recorded plan and linked-guidance blobs,
+   fixed original base, full implementation range, actual commits, and the log's
+   scope/check claims. Separate missing implementation, an implementation defect
+   despite clear guidance, incorrect plan guidance, and missing evidence. No
+   word-count target applies to code, work logs or review reports.
 
 Do not let unrelated legacy defects expand the review into a repository-wide
 audit. Relevant pre-existing code that makes the changed behavior unsafe or
@@ -71,7 +70,7 @@ that relationship and return any material scope decision to the parent/user.
 
 ## Findings and verdict
 
-Append a round to `.agents/reviews/work/ID.md` with the shared metadata. Include:
+Append a round to `.agents/reviews/ID.md` with the shared metadata. Include:
 
 - **Reviewed range:** full Code base/head, current checkout identity, relevant
   later record-only changes, request/plan/brief and work-log paths.
