@@ -68,6 +68,103 @@ audit. Relevant pre-existing code that makes the changed behavior unsafe or
 unreadable is not exempt merely because it was not added in this diff. Explain
 that relationship and return any material scope decision to the parent/user.
 
+## Review user interface design
+
+Apply this section to any change a user sees or interacts with. Read the
+repository's design, UI and interface-text rules first, and identify the
+reference surface: the screen or component the user or project treats as the
+standard of careful design. A request or brief that names one settles it;
+otherwise use the established surface most similar to the changed one. Hold the
+change to that surface's design language.
+
+Judge the rendered interface alongside the code. Use current screenshots or the
+running app, in every supported theme and at both comfortable and narrow widths.
+A screenshot captured before the reviewed head is not evidence for it.
+
+1. **Consistency:** compare spacing, sizes, alignment, color, type, icon
+   weight, hover and focus treatment, and motion against the reference surface.
+   Check that content edges line up with neighboring controls, padding stays even
+   when a scrollbar takes space, wrapped rows keep their alignment, and text
+   fades or truncates only when it overflows. Report each mismatch with the
+   reference's value.
+2. **Information design:** for each row, card or panel, establish what the user
+   most needs and check that it leads. Report icons that spend space without
+   carrying meaning, lines that repeat what another element already shows,
+   decoration that competes with primary content, and lists that interleave
+   items a user would expect grouped together. Report affordances foreign to the
+   product's platform, such as web-style underlined links and hover-revealed
+   external links in a desktop app; a context menu usually carries those actions.
+   Check interface text against the project's rules, including its rules on
+   separator characters and punctuation.
+3. **Motion and layout stability:** check that content keeps its height while
+   it streams or updates, that a height change happens inside its animation
+   rather than before or after it, and that revealing a hidden tab, panel or
+   tree does not replay the opening animations of everything inside it. Check
+   reduced-motion behavior.
+4. **Visibility and focus:** state that should follow what the user can see,
+   such as marking items read or clearing an indicator, must depend on actual
+   visibility, not on selection while another view covers it. Check that focus
+   lands where the user expects after navigation, including on returning to a
+   view, and stays put when a view only moves.
+5. **Accessibility:** check roles, accessible names, keyboard reach to
+   hover-revealed controls, focus order, and nested interactive elements.
+6. **Reuse:** search the codebase for an existing component, hook or style
+   that the new markup or logic repeats, and report the copy with the shared
+   piece that replaces it.
+
+Match depth to the interface's maturity. Hold settled surfaces to the full
+standard. For interface the user is still iterating on, report only what breaks
+or looks broken in normal use; polish and hardening of a design that is still
+changing waste the next iteration. Report a test gap when a visibility, focus or
+motion regression the review found has no test that would catch its return.
+
+## Review test hygiene
+
+Apply this section to every change that adds, edits, removes or depends on
+tests. Read the repository's testing rules first, including any stated time
+budget for the suite or a package. Hold the tests to the same standard as
+product code: a slow, flaky or leaky suite is a defect.
+
+1. **Speed:** compare the suite and the touched packages against the budget or
+   their usual time, and report a regression with its measurement. Find where
+   a slow test waits: per-test durations, the test run alone, and its child
+   processes. A test that is fast alone and slow in its package waits on
+   something tests share. Report tests that build binaries, start real
+   processes, create repositories or start services when a plain fixture or an
+   in-process call proves the same behavior; independent tests that run
+   serially; and setup repeated per case that one shared fixture could hold.
+2. **Waiting:** tests wait on conditions, never fixed sleeps or timing guesses.
+   A timeout used as a test seam is set before the work it governs starts and
+   is large enough that normal work under parallel load never trips it.
+3. **Isolation:** tests never read or change the user's configuration, state,
+   workspaces or running processes, and use no network. Each test takes its
+   paths from a temporary directory and its dependencies through constructors
+   or explicit parameters. Report mutation of process-wide state, such as
+   environment variables, the working directory, global tool configuration or
+   configuration shared across checkouts, because it leaks between tests and
+   forces them to run serially. Check that tests stop every process they start
+   and remove every hook, file and setting they install. Check that tools
+   with machine-dependent defaults are pinned; an unset Git identity, for
+   example, triggers a host-name lookup that can take seconds.
+4. **Flakiness:** treat an intermittent failure as a race in the test or the
+   product until its cause is named. Read the evidence that the cause is fixed:
+   a repeated run of the affected test under the race detector or equivalent,
+   with run count and failure rate before and after, compared on the base
+   revision. A retry, longer timeout or skipped assertion is not a fix. When the
+   race is in the product, the fix belongs in the product.
+5. **Value and coverage:** tests assert observable behavior through public
+   entry points; report assertions on private state, markup or styling that is
+   not itself the protected behavior, and the same behavior repeated at every
+   layer. When the change deletes or rewrites tests, trace each removed case to
+   the code path it exercised and confirm another test still reaches it.
+   Deleting the only test of a consequential path, such as a rollback, cleanup
+   or data-loss guard, is a finding even when the work log calls the case
+   redundant. Deleting a fast test saves no time; judge it on value alone.
+6. **Readability:** a helper does one thing. Report helpers that switch between
+   unrelated mechanisms on a parameter, fixtures whose names or comments
+   misstate what they catch, and cases a reader cannot connect to the behavior
+   they protect.
+
 ## Findings and verdict
 
 Append a round to `.agents/reviews/ID.md` with the shared metadata. Include:

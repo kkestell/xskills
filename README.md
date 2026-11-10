@@ -9,7 +9,7 @@ inspect the implemented code.
 | --- | --- |
 | `xplan` | Research a request and write implementation-ready execution plans, or a task brief for small work. |
 | `xwork` | Implement a plan or explicit brief, verify the result, and commit the code and work log locally. |
-| `xreview` | Independently review the implemented code, tests, and conformance to the plan. |
+| `xreview` | Independently review the implemented code, test hygiene, interface design, and conformance to the plan. |
 | `xauto` | Coordinate planning, implementation, independent review, and corrections through committed completion. |
 
 ## Install

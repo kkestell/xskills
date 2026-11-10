@@ -1,6 +1,6 @@
 ---
 name: xreview
-description: Independently review an implementation with xreview LOG, reading the actual code, tests, clarity and conformance to the plan or brief across the work log's recorded revision range. Write a linked .agents/reviews record without editing the reviewed code. Use only when invoked or explicitly requested, including delegation by xauto.
+description: Independently review an implementation with xreview LOG, reading the actual code, tests and their hygiene, clarity, user interface design and conformance to the plan or brief across the work log's recorded revision range. Write a linked .agents/reviews record without editing the reviewed code. Use only when invoked or explicitly requested, including delegation by xauto.
 ---
 
 # Review an implementation
