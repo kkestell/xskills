@@ -1,13 +1,13 @@
 ---
 name: xwork
-description: Implement a decision-complete plan with xwork PLAN, or an explicitly supplied bounded task brief, verify the change, write a linked .agents/work log, and commit task-owned code and the log locally. Use only when the user invokes xwork or explicitly requests this workflow, including delegation by xauto.
+description: Implement a decision-complete plan with xwork PLAN, or an explicitly supplied bounded task brief, verify the change, and write a linked .agents/work log, leaving everything uncommitted. Use only when the user invokes xwork or explicitly requests this workflow, including delegation by xauto.
 ---
 
 # Execute a bounded assignment
 
 Read `../xauto/references/workflow.md` for shared IDs, `.agents/` paths, Git
-ownership, revision anchors and commit order. Install the four x-skills together.
-This skill implements, verifies, logs and commits; it does not silently redesign
+ownership and revision anchors. Install the four x-skills together.
+This skill implements, verifies and logs; it does not silently redesign
 the assignment or claim an independent review of its own work.
 
 ## Establish the handoff
@@ -23,7 +23,7 @@ the assignment or claim an independent review of its own work.
   reason in the work log. Do not create a ceremonial plan. If inspection reveals
   substantial design work, return it for planning instead of hiding it here.
 - Confirm the task checkout and Git status before editing. Git is required for
-  this committing workflow; do not initialize a repository silently. Follow the
+  the revision anchors; do not initialize a repository silently. Follow the
   shared contract for unrelated files or index entries.
 - Record the full starting HEAD as **Code base** before the first implementation
   change. During a repair, read the existing log and retain its original base.
@@ -52,33 +52,26 @@ the assignment or claim an independent review of its own work.
    scope, code clarity and accidental generated changes. Do not claim tests ran
    just because they appear in the plan.
 
-## Commit code, then record its known revision
+## Record the verified snapshot
 
-Stage only task-owned implementation/tests and necessary non-workflow docs.
-Inspect the index and commit with `X-Task` and `X-Stage: work` (or `fix` for a
-review repair). Capture the actual full commit ID **after** commit hooks as Code
-head. If hooks change code, inspect/reverify it before treating that head as
-verified. Do not make an empty code commit for an evidence-backed no-op; record
-that there was no implementation change and use the current HEAD.
+Do not stage, commit, stash or reset anything; the work stays uncommitted for
+xauto's final commit or for the user. Take the **Code snapshot** of the
+verified working tree as the shared contract describes. If anything changes
+after the checks ran, rerun the affected checks before taking it.
 
 Write `.agents/work/ID.md` using the fields in the shared contract. Explain what
 changed concisely through changed responsibilities/paths and deviations; link to
-the plan instead of repeating its design. List the actual implementation
-commit(s), preserve the original Code base, record the latest Code head and
-checks, and set status `implemented`. Include your native conversation ID and
-other available session provenance. Keep verification evidence inspectable at its
-tested revision so the reviewer can reuse them; do not merely say “tests pass”.
-On repair append findings addressed and verification; do
-not erase earlier failed checks or replace the base with the last fix's parent.
-Commit the log separately with `X-Stage: work-log`. The log points backward to
-known code hashes; it never predicts its own commit hash.
+the plan instead of repeating its design. Preserve the original Code base,
+record the latest snapshot and checks, and set status `implemented`. Include your
+native conversation ID and other available session provenance. Keep verification
+evidence inspectable at its tested snapshot so the reviewer can reuse it; do not
+merely say “tests pass”. On repair append findings addressed, verification and
+the new snapshot; do not erase earlier failed checks or replace the base.
 
 If required checks fail, record status `blocked` and the failure; do not present
-a successful handoff. Partial work may be checkpointed in task-owned commits
-clearly labeled incomplete, but the parent must stop the success path. Never
-push, force, amend unrelated commits or discard user changes.
+a successful handoff. Never push, commit, force, or discard user changes.
 
-Return task ID, exact plan/brief and log paths, Code base/head, code/log commit
-IDs, verification results, deviations, session provenance and blockers before
-the parent ends the worker. Await independent
-`xreview <work log filename>`; do not mark the task `complete` yourself.
+Return task ID, exact plan/brief and log paths, Code base and snapshot,
+verification results, deviations, session provenance and blockers before the
+parent ends the worker. Await independent `xreview <work log filename>`; do not
+mark the task `complete` yourself.

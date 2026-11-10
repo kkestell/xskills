@@ -36,12 +36,10 @@ that limitation instead of claiming independence. Do not delegate another review
 or launch a worker unless separately authorized.
 
 Read/investigate/run appropriate checks, and write only the review record. Do
-not fix code, stage or commit by default. Return findings to the implementer;
-the parent handles artifact commits and review loops. An explicitly authorized
-isolated-worker handoff may commit its review record alone, with the task/stage
-trailers. This exception does not authorize code edits.
+not fix code, stage or commit. Return findings to the implementer; the parent
+handles review loops and the final commit.
 
-The handoff must include exact input/output paths, reviewed revisions, verdict,
+The handoff must include exact input/output paths, reviewed snapshot, verdict,
 actionable findings, checks run or reused with their evidence sources, session
 provenance (including native conversation ID), and limitations. Keep acceptance
 reports concise using the shared contract: preserve the assessment and anchors,

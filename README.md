@@ -54,15 +54,15 @@ Or delegate the complete workflow:
 xauto Add short-circuit logical operators using the existing compiler stages.
 ```
 
-`xreview` takes the work log of the change to review. `xplan` and
-standalone `xreview` write artifacts without committing by default. `xwork`
-commits task-owned code and its log locally; `xauto` also commits plan and
-review records. The skills do not push changes automatically.
+`xreview` takes the work log of the change to review. `xplan`, `xwork` and
+`xreview` leave everything uncommitted. `xauto` runs every stage in one checkout
+and finishes with a single local commit holding the code, tests and records. The
+skills do not push changes.
 
 Records live under `.agents/plans/`, `.agents/work/`, and `.agents/reviews/`,
 sharing a task ID of the form `YYYY-MM-DD-NNN-slug`. Shared designs belong in
 `.agents/designs/` when needed. The [workflow contract](skills/xauto/references/workflow.md) defines
-handoffs, revision anchors, and commit ownership.
+handoffs, revision anchors, and the final commit.
 
 ## Planning standard
 
