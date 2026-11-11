@@ -61,7 +61,8 @@ skills do not push changes.
 
 Records live under `.agents/plans/`, `.agents/work/`, and `.agents/reviews/`,
 sharing a task ID of the form `YYYY-MM-DD-NNN-slug`. Shared designs belong in
-`.agents/designs/` when needed. The [workflow contract](skills/xauto/references/workflow.md) defines
+`.agents/designs/` when needed. Each skill writes its records from the templates in
+its `templates/` directory. The [workflow contract](skills/xauto/references/workflow.md) defines
 handoffs and the final commit.
 
 ## Planning standard

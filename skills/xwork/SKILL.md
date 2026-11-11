@@ -56,7 +56,8 @@ Do not stage, commit, stash or reset anything; the work stays uncommitted for
 xauto's final commit or for the user. If anything changes after the checks
 ran, rerun the affected checks.
 
-Write `.agents/work/ID.md` using the fields in the shared contract. Explain what
+Write `.agents/work/ID.md` from `templates/work-log.md`, using the fields in
+the shared contract. Explain what
 changed concisely through changed responsibilities/paths and deviations; link to
 the plan instead of repeating its design. Record the checks and set status `implemented`. Include your
 native conversation ID and other available session provenance. Keep verification

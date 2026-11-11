@@ -71,10 +71,11 @@ wiring is not automatically a new mechanism, and test-only work is real work.
 
 ## Write the plan
 
-Write `.agents/plans/ID.md`, reusing the parent's task ID or allocating it by the
-shared contract. Include its metadata and only sections that help execution;
-combine them when clearer. Put necessary shared design/split-unit maps in
-`.agents/designs/ID.md`, with distinct IDs for execution units:
+Write `.agents/plans/ID.md` from `templates/plan.md`, reusing the parent's task
+ID or allocating it by the shared contract. Keep its metadata and only sections
+that help execution; combine them when clearer. Put necessary shared
+design/split-unit maps in `.agents/designs/ID.md` from `templates/design.md`,
+with distinct IDs for execution units. The plan's sections:
 
 - **Outcome and boundaries:** observable behavior, constraints, non-goals.
 - **Current system:** relevant paths/symbols, data/control flow, existing behavior

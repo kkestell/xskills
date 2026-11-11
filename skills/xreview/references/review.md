@@ -185,6 +185,6 @@ Informational observations may be separate notes, not silently deferred defects.
 Missing evidence for a required check blocks acceptance, but lack of unrelated
 environment/context is not automatically a design or code defect.
 
-Return the report and reviewed range to the caller. Do not make the fixes,
-stage or commit anything. Under xauto the parent routes fixes to xwork and
-obtains review of the full updated change while preserving the original base.
+Return the report to the caller. Do not make the fixes, stage or commit
+anything. Under xauto the parent routes fixes to xwork and obtains review of the
+full updated change.

@@ -21,7 +21,8 @@ that directory. Do not move or overwrite an input merely to normalize its path.
 
 Read `references/review.md`. The work log locates the task; it
 is not a substitute for inspecting the actual implementation. Write
-`.agents/reviews/ID.md`.
+`.agents/reviews/ID.md` from `templates/review.md`; a later round appends its
+`## Round N` section to the existing file.
 
 Reuse the task ID. For an input without a usable ID, allocate one by the shared
 contract and record the original path. Append numbered rounds rather than replacing previous evidence or approval. Preserve
