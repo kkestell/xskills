@@ -11,7 +11,7 @@ assigned work and the detail explaining it. A well-described monster assignment
 is still too large; a polished tiny plan should have been a task brief.
 
 Read `../xauto/references/workflow.md` for shared IDs, `.agents/` artifact paths,
-revision metadata and orchestrated handoffs. Install the four x-skills together.
+record metadata and orchestrated handoffs. Install the four x-skills together.
 
 ## Investigate before committing to a design
 

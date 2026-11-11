@@ -23,8 +23,7 @@ artifact, renumber an existing task, or move legacy inputs automatically.
 | Shared design / split-unit scope map, only when needed | `.agents/designs/ID.md` |
 
 Plans, logs and reviews share exactly the same basename. Append numbered review
-rounds to the review file; preserve earlier findings, reviewed snapshots and
-dispositions. Append to plans and logs rather than rewriting their history. Do not overwrite a review round with a later
+rounds to the review file; preserve earlier findings and dispositions. Append to plans and logs rather than rewriting their history. Do not overwrite a review round with a later
 approval. An existing input outside this layout may be read in place; write new
 records here, recording its exact path. Adopt its ID only if it is unambiguous.
 Use the latest applicable review and recorded finding dispositions for readiness;
@@ -61,7 +60,7 @@ known harness/checkout/stage timestamps as lookup context. Do not invent an ID,
 scan unrelated conversations, or add a telemetry service to fill the gap. Missing
 metadata alone does not invalidate otherwise verified code.
 
-## Records and revision anchors
+## Records
 
 Keep metadata readable; a Markdown field list is sufficient. No database or
 additional run-manifest format is required.
@@ -69,11 +68,10 @@ additional run-manifest format is required.
 Keep records focused on what the next reader needs. The plan owns the design;
 the log owns changes, deviations and verification; reviews own findings and
 independent assessment. Link to existing explanations rather than rewriting them
-in every artifact. A no-findings review needs a verdict, exact anchors, a brief
+in every artifact. A no-findings review needs a verdict, a brief
 justification of the tricky invariants, checks/evidence and limitations—not a
 second implementation walkthrough. Expand for substantive findings or necessary
-proof, not to satisfy a report-length quota. Preserve all revision anchors,
-consequential constraints and unresolved finding dispositions when shortening.
+proof, not to satisfy a report-length quota. Preserve consequential constraints and unresolved finding dispositions when shortening.
 
 **Plan:** task ID, status (`draft`, `ready`, `blocked`, or `superseded`), source
 HEAD when available, author, dependencies/shared-design paths, and the request
@@ -83,40 +81,22 @@ or a faithful outcome brief. Ready means engineering decisions are settled.
 and **Guidance blobs** (paths and hashes of linked local shared designs and their
 transitive execution guidance, hashed as actually read, not just link text), or
 the full task brief and reason for skipping a plan; author, status
-(`implemented`, `blocked`, `complete`), fixed **Code base**, latest **Code
-snapshot**, changed paths, deviations, exact verification commands/results,
+(`implemented`, `blocked`, `complete`), changed paths, deviations, exact verification commands/results,
 session-provenance table, review paths and outstanding limitations. Append repair
 entries rather than erasing the initial execution history. Record each check's
-target snapshot and relevant environment; one shared snapshot is sufficient
-when all results apply to it. Keep evidence locatable through a log/output
+relevant environment. Keep evidence locatable through a log/output
 reference or the native conversation and relevant tool result, without copying
 entire successful command outputs into each review.
 
-**Review round:** task ID, author, work-log path, fixed Code
-base and reviewed Code snapshot, verification evidence, numbered findings with
+**Review round:** task ID, author, work-log path, verification evidence, numbered findings with
 locations, resolution status, and verdict (`accept`, `changes-required`, or
 `blocked`). State limitations; an unverified required check is not a passing one.
 
 Task work stays uncommitted in the task checkout until xauto's single final
-commit. The **Code base** is the full commit ID of the checkout's HEAD when the
-task starts; **never advance it during the task**. A **Code snapshot** is the
-Git tree ID of the working tree, untracked files included, written without
-touching the real index, HEAD or any ref:
-
-```sh
-idx=$(mktemp)
-cp "$(git rev-parse --git-path index)" "$idx"
-GIT_INDEX_FILE=$idx git add -A
-GIT_INDEX_FILE=$idx git write-tree
-rm "$idx"
-```
-
-Take a snapshot when a worker hands off and when a reviewer starts. Review the
-entire change from Code base to the snapshot, including all fixes:
-`git diff CODE_BASE SNAPSHOT`. `git diff OLD_SNAPSHOT NEW_SNAPSHOT` shows what a
-repair round changed. Use full object IDs copied from Git, and verify them with
-`git cat-file -t` before using them. Also inspect the relevant whole files and
-their callers/invariants.
+commit, so the change under review is the working tree against HEAD:
+`git diff HEAD` plus the untracked files `git status` lists. Review all of it,
+including every fix, and inspect the relevant whole files and their
+callers/invariants.
 
 Workflow records are not implementation. Exclude only their explicitly named
 paths when analyzing code changes; **do not blanket-exclude `.agents/`**, which
@@ -140,11 +120,9 @@ isolating; a clean HEAD checkout must not silently omit required user work.
 The normal xauto sequence, all in the one task checkout:
 
 1. The planner writes the plan or shared design.
-2. xwork implements, verifies and writes the work log, then records the Code
-   snapshot it verified.
-3. The independent reviewer reviews Code base to snapshot and appends a review
-   round. Route fixes to the implementer and repeat steps 2–3 with the original
-   Code base and a new snapshot.
+2. xwork implements, verifies and writes the work log.
+3. The independent reviewer reviews the whole change and appends a review
+   round. Route fixes to the implementer and repeat steps 2–3.
 4. The parent verifies the final state and marks the log `complete`.
 5. The parent stages the task's named paths (code, tests and records), inspects
    the staged diff, and makes **one commit**. Its subject describes the change,
@@ -162,7 +140,7 @@ honestly; do not label it complete to satisfy the cycle.
 xwork owns completion of required plan/repository checks. Independent review
 means independent inspection and judgment, not automatic repetition of every
 command. The reviewer first inspects the existing evidence and confirms its
-revision, relevant environment, scope and result. Reuse matching, inspectable
+relevant environment, scope and result. Reuse matching, inspectable
 results unless repository/user instructions require a fresh review run or a
 concrete uncertainty needs another check. A pass claim without usable evidence
 is not enough. Mark results as `run` or `reused`, naming their source and why any
@@ -175,26 +153,21 @@ or a stated reason, not merely a new worker or workflow stage. The parent passes
 existing evidence forward and does not trigger another check round just to
 finalize records.
 
-Checks must apply to the snapshot they name. If any code, config or test file
-changes after a check, rerun the affected check. Record-only changes do not
-invalidate matching code-check results. Before the final commit, take a fresh
-snapshot and compare it with the final reviewed one:
-`git diff --stat REVIEWED_SNAPSHOT FINAL_SNAPSHOT`. Only known workflow-record
-changes may remain unreviewed. In a split cycle, later units may change code
-after an earlier unit's reviewed snapshot: account for those changes through
-the later units' accepted review ranges. They do not invalidate the earlier
-review merely by existing. Any code/config/test change not covered by such an
-accepted later range needs verification and renewed review. If later work
-invalidates an earlier contract, revisit the affected plan and review as well;
-accepted unit reviews are not a waiver for broken integration. Completion means
-the accepted review matches the final code and that code is committed, not
-merely that `git status` looks clean.
+Checks apply to the working tree as it stood when they ran. If any code,
+config or test file changes after a check, rerun the affected check.
+Record-only changes do not invalidate matching code-check results. Once the
+final review is accepted, commit before anything else touches the checkout. In
+split work, each unit's review covers the whole working-tree change; a change to
+an earlier unit's code after its acceptance needs renewed verification and
+review, and broken earlier contracts send the affected plan back for revision.
+Completion means the accepted review matches the final code and that code is
+committed, not merely that `git status` looks clean.
 
 ## Stage workers
 
 Run every stage worker in the task checkout, one at a time. Give each worker its
-exact directory, stage, task ID, input/output paths, Code base, latest snapshot
-and allowed edits. Confirm its actual checkout before using its results; tool
+exact directory, stage, task ID, input/output paths and allowed
+edits. Confirm its actual checkout before using its results; tool
 defaults may create a different worktree. A worker must not stage, commit, stash
 or reset anything.
 

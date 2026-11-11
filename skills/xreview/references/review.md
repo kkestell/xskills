@@ -4,22 +4,12 @@
 
 Read the work log, original request or preserved brief, plan when supplied,
 referenced design/dependencies, and repository instructions.
-Confirm the task ID and repository. Extract the full **Code base** commit ID and
-the latest **Code snapshot** tree ID from the log, and verify both with
-`git cat-file -t`. For missing or ambiguous anchors, ask the caller to establish
-them. Do not infer the task from recent commits or the plan's filename.
+Confirm the task ID and repository. Do not infer the task from recent commits
+or the plan's filename.
 
-Take a fresh snapshot of the checkout as the shared contract describes, and
-compare it with the logged one: `git diff --stat LOGGED_SNAPSHOT FRESH_SNAPSHOT`.
-If code, config or tests differ, the log does not describe what is in front of
-you; return that to the caller instead of reviewing. Record-only differences
-are expected.
-
-Set `CODE_BASE` and `SNAPSHOT` to the validated IDs. Inspect the full
-`git diff --name-status "$CODE_BASE" "$SNAPSHOT"` and
-`git diff "$CODE_BASE" "$SNAPSHOT"`. On a repair round, also read
-`git diff PREVIOUS_SNAPSHOT "$SNAPSHOT"` to see what the fix changed, but review
-the whole change from the base. Include tests, build and deployment
+The change is uncommitted in the task checkout. Inspect `git status`,
+`git diff HEAD` and every untracked file it lists. On a repair round, focus first
+on what the fix touched, but review the whole change. Include tests, build and deployment
 configuration and source under `.agents/skills/` where relevant. Only explicitly
 identified workflow records are excluded from code analysis. Look at complete
 touched files, callers and contracts, not only added lines.
@@ -45,7 +35,7 @@ touched files, callers and contracts, not only added lines.
 4. **Verification:** inspect real assertions and fixtures, not test names or the
    log's pass claims. Check behavior, regressions and feasible failure scenarios;
    invalid/unspecified-behavior examples are not proof. First inspect the existing
-   check evidence and confirm it applies to the reviewed revision, relevant
+   check evidence and confirm it applies to the current code, relevant
    environment and required coverage, including fixes/integration. Follow the
    shared verification-reuse policy: reuse sufficient matching evidence unless
    fresh execution is explicitly required. Independent reasoning and inspection
@@ -56,7 +46,7 @@ touched files, callers and contracts, not only added lines.
    docs-only changes without builds unless instructions require them. Missing
    usable evidence for a required check must be obtained, not waived.
 5. **History and handoff:** verify the recorded plan and linked-guidance blobs,
-   fixed original base, snapshot history, and the log's
+   and the log's
    scope/check claims. Separate missing implementation, an implementation defect
    despite clear guidance, incorrect plan guidance, and missing evidence. No
    word-count target applies to code, work logs or review reports.
@@ -77,7 +67,7 @@ change to that surface's design language.
 
 Judge the rendered interface alongside the code. Use current screenshots or the
 running app, in every supported theme and at both comfortable and narrow widths.
-A screenshot captured before the reviewed snapshot is not evidence for it.
+A screenshot captured before the latest change is not evidence for it.
 
 1. **Consistency:** compare spacing, sizes, alignment, color, type, icon
    weight, hover and focus treatment, and motion against the reference surface.
@@ -167,8 +157,8 @@ product code: a slow, flaky or leaky suite is a defect.
 
 Append a round to `.agents/reviews/ID.md` with the shared metadata. Include:
 
-- **Reviewed range:** full Code base and reviewed snapshot, current checkout
-  identity, request/plan/brief and work-log paths.
+- **Reviewed change:** checkout and branch, request/plan/brief and work-log
+  paths.
 - **Verdict:** `accept`, `changes-required`, or `blocked`; concise reasons and
   an explicit independence statement.
 - **Findings:** stable identifiers, priority, exact path/line or symbol, concrete
@@ -176,17 +166,17 @@ Append a round to `.agents/reviews/ID.md` with the shared metadata. Include:
   Correctness findings should describe a real failure or violated invariant;
   clarity findings should show what is hard to follow and how to simplify it.
 - **Verification:** distinguish commands independently `run` from results
-  `reused`; name the exact command, target revision, result and evidence source.
+  `reused`; name the exact command, result and evidence source.
   Explain why any fresh run was needed. Reference existing results instead of
   copying full output; list failures, omissions and environmental blockers.
   Do not mark absent checks passed.
 - **Resolution table, when prior findings exist:** each finding's status and
-  evidence at the new snapshot; identify remaining issues and any new findings.
+  evidence in the current code; identify remaining issues and any new findings.
   An empty new-finding list is not evidence that old findings were fixed.
 
 For a no-findings round, say so and give a brief independent justification of
-the difficult invariants, not a second implementation walkthrough. Keep exact
-anchors, author/native-session provenance, check sources and limitations. Do not
+the difficult invariants, not a second implementation walkthrough. Keep
+author/native-session provenance, check sources and limitations. Do not
 add empty findings/resolution sections or restate the plan to make the review
 look thorough. Substantive findings and necessary proof may take more space.
 

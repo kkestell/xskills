@@ -44,13 +44,13 @@ Do not run an unrelated kauto workflow because of a name typo in a request.
 ## Dispatch explicit stage briefs
 
 Each worker gets the objective, relevant user constraints, skill and invocation,
-task ID, exact checkout, Code base and latest snapshot, inputs/output paths,
+task ID, exact checkout, inputs/output paths,
 allowed edits, check requirements and existing verification evidence, expected
 handoff (including session provenance) and stopping condition.
 Include where the result will be used. Supply a plan or request, not assumptions
 the worker is supposed to independently verify. Ask each worker to begin its
-final response with a one-line handoff (task ID, stage, artifact path, Code
-snapshot, verdict), because some hosts deliver only the start of a child's reply.
+final response with a one-line handoff (task ID, stage, artifact path,
+verdict), because some hosts deliver only the start of a child's reply.
 
 Run stage workers in the task checkout itself, one at a time. Workers never
 stage or commit; their files stay uncommitted until the final commit. Reuse the
@@ -75,22 +75,20 @@ Confirm each child's actual directory before using its results.
 ## Work → review the implementation
 
 - Dispatch an implementer with **`xwork .agents/plans/ID.md`**, or the explicit
-  tiny-task brief. xwork records the fixed Code base, implements and verifies,
-  writes its log and returns the Code snapshot it verified.
+  tiny-task brief. xwork implements, verifies and writes its log.
 - Check the handoff against Git and the recorded test output; a child's “done”
-  message is not evidence of the right tree or completed checks. Take your own
-  snapshot and confirm it matches the one the worker reported.
+  message is not evidence of the right tree or completed checks.
 - Start an independent reviewer with **`xreview .agents/work/ID.md`**. Give
-  the request, plan/brief, Code base and snapshot, work log and
+  the request, plan/brief, work log and
   relevant repository instructions. The reviewer reads code and tests, not just
   the log, and appends a review round without fixing the implementation.
-- Pass through inspectable check results for the recorded snapshot. Ask the
+- Pass through inspectable check results from the work log. Ask the
   reviewer to inspect/reuse that evidence first and identify any remaining
   uncertainty before selecting fresh checks. Do not routinely request focused
   repetitions, a full package run and the repository suite again for the same
   unchanged code. Explicit fresh-run requirements still apply.
 - Send actionable findings to the implementer. It fixes them and appends a log
-  entry with a new snapshot, retaining the original base. Return the complete updated change to
+  entry. Return the complete updated change to
   the independent reviewer; prior findings need resolution evidence, not a fresh
   empty checklist. Preserve all review rounds. The reviewer can be reused while
   independent of the author; no role may approve code it just wrote.
@@ -111,15 +109,10 @@ Before success, the parent verifies:
 
 1. Every requested execution unit is implemented, required checks actually passed,
    and its final code has an independent accepted review.
-2. Every code/test/config change after a unit's reviewed snapshot is covered by
-   a later unit's accepted review range, or goes back through verification and
-   review. Compare snapshots, not just matching path names. Broken earlier
-   contracts require renewed checks/review; a later accepted unit does not
-   automatically excuse them.
-3. Work logs contain the executed plan/brief, fixed base, final reviewed
-   snapshot, parent/worker native conversation IDs (or explicit unavailable
-   reasons), run/reused verification evidence and review paths. Set them
-   `complete`.
+2. No code, config or test file changed after the final accepted review.
+3. Work logs contain the executed plan/brief, parent/worker native conversation
+   IDs (or explicit unavailable reasons), run/reused verification evidence and
+   review paths. Set them `complete`.
 4. Make the single final commit as the shared contract describes. Verify with
    Git, preserve unrelated work, and do not push or automatically merge into a
    different branch.

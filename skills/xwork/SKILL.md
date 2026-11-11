@@ -6,7 +6,7 @@ description: Implement a decision-complete plan with xwork PLAN, or an explicitl
 # Execute a bounded assignment
 
 Read `../xauto/references/workflow.md` for shared IDs, `.agents/` paths, Git
-ownership and revision anchors. Install the four x-skills together.
+ownership and the work log's fields. Install the four x-skills together.
 This skill implements, verifies and logs; it does not silently redesign
 the assignment or claim an independent review of its own work.
 
@@ -22,11 +22,9 @@ the assignment or claim an independent review of its own work.
   delegation), preserve the full outcome, constraints, checks and skip-planning
   reason in the work log. Do not create a ceremonial plan. If inspection reveals
   substantial design work, return it for planning instead of hiding it here.
-- Confirm the task checkout and Git status before editing. Git is required for
-  the revision anchors; do not initialize a repository silently. Follow the
+- Confirm the task checkout and Git status before editing. Git is required; do
+  not initialize a repository silently. Follow the
   shared contract for unrelated files or index entries.
-- Record the full starting HEAD as **Code base** before the first implementation
-  change. During a repair, read the existing log and retain its original base.
 
 ## Implement and verify
 
@@ -52,26 +50,23 @@ the assignment or claim an independent review of its own work.
    scope, code clarity and accidental generated changes. Do not claim tests ran
    just because they appear in the plan.
 
-## Record the verified snapshot
+## Write the work log
 
 Do not stage, commit, stash or reset anything; the work stays uncommitted for
-xauto's final commit or for the user. Take the **Code snapshot** of the
-verified working tree as the shared contract describes. If anything changes
-after the checks ran, rerun the affected checks before taking it.
+xauto's final commit or for the user. If anything changes after the checks
+ran, rerun the affected checks.
 
 Write `.agents/work/ID.md` using the fields in the shared contract. Explain what
 changed concisely through changed responsibilities/paths and deviations; link to
-the plan instead of repeating its design. Preserve the original Code base,
-record the latest snapshot and checks, and set status `implemented`. Include your
+the plan instead of repeating its design. Record the checks and set status `implemented`. Include your
 native conversation ID and other available session provenance. Keep verification
-evidence inspectable at its tested snapshot so the reviewer can reuse it; do not
-merely say “tests pass”. On repair append findings addressed, verification and
-the new snapshot; do not erase earlier failed checks or replace the base.
+evidence inspectable so the reviewer can reuse it; do not
+merely say “tests pass”. On repair append findings addressed, and verification;
+do not erase earlier failed checks.
 
 If required checks fail, record status `blocked` and the failure; do not present
 a successful handoff. Never push, commit, force, or discard user changes.
 
-Return task ID, exact plan/brief and log paths, Code base and snapshot,
-verification results, deviations, session provenance and blockers before the
+Return task ID, exact plan/brief and log paths, verification results, deviations, session provenance and blockers before the
 parent ends the worker. Await independent `xreview <work log filename>`; do not
 mark the task `complete` yourself.
