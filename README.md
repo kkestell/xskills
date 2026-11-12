@@ -7,10 +7,10 @@ inspect the implemented code.
 
 | Skill | Purpose |
 | --- | --- |
-| `xplan` | Research a request and write implementation-ready execution plans, or a task brief for small work. |
-| `xwork` | Implement a plan or explicit brief, verify the result, and commit the code and work log locally. |
+| `xtask` | The entry point. Coordinate planning, implementation, independent review, and corrections through committed completion, stopping only for decisions that need the user. |
+| `xplan` | Research a request and write implementation-ready execution plans, or a task brief for small work, each listing the assumptions the developer must check. |
+| `xwork` | Implement a plan or brief, verify the result, and write the work log. |
 | `xreview` | Independently review the implemented code, test hygiene, interface design, and conformance to the plan. |
-| `xauto` | Coordinate planning, implementation, independent review, and corrections through committed completion. |
 
 ## Install
 
@@ -31,16 +31,29 @@ To install directly from GitHub without cloning or Make:
 
 ```sh
 npx --yes skills add kkestell/xskills --global --yes \
-  --skill xplan xwork xreview xauto --agent claude-code codex opencode
+  --skill xplan xwork xreview xtask --agent claude-code codex opencode
 ```
 
-Python 3.9+ is needed for the bundled plan-metrics helper. Implementation and
-committing workflows require a Git repository. `xauto` requires child-session
+Implementation and committing workflows require a Git repository. `xtask` requires child-session
 or subagent support in the host; it stops if neither is available.
 
 ## Use
 
-Ask your agent to invoke a skill with the request or exact artifact path:
+Start a task with `xtask` and the request:
+
+```text
+xtask Add short-circuit logical operators using the existing compiler stages.
+```
+
+`xtask` runs each stage in a fresh worker. Before work starts, it shows you
+the planner's **Check your assumptions** list in one message: each decision or
+unconfirmed assumption, led by the consequence you will notice, with `xtask`'s
+recommendation to keep the planner's choice or change it, and why. You answer
+only the entries you want changed. After that it stops only for plan findings,
+blocking review findings, and questions of intent or scope. Ask it to stop
+after every stage if you want to step through.
+
+Each stage also runs on its own, given the request or exact artifact path:
 
 ```text
 xplan Add short-circuit logical operators using the existing compiler stages.
@@ -48,32 +61,19 @@ xwork .agents/plans/2026-11-09-001-logical-operators.md
 xreview .agents/work/2026-11-09-001-logical-operators.md
 ```
 
-Or delegate the complete workflow:
-
-```text
-xauto Add short-circuit logical operators using the existing compiler stages.
-```
-
 `xreview` takes the work log of the change to review. `xplan`, `xwork` and
-`xreview` leave everything uncommitted. `xauto` runs every stage in one checkout
-and finishes with a single local commit holding the code, tests and records. The
+`xreview` leave everything uncommitted. `xtask` runs every stage in one checkout
+and makes one local commit per plan, holding its code, tests and records, once
+its review is accepted. The
 skills do not push changes.
 
 Records live under `.agents/plans/`, `.agents/work/`, and `.agents/reviews/`,
-sharing a task ID of the form `YYYY-MM-DD-NNN-slug`. Shared designs belong in
-`.agents/designs/` when needed. Each skill writes its records from the templates in
-its `templates/` directory. The [workflow contract](skills/xauto/references/workflow.md) defines
-handoffs and the final commit.
+sharing a task ID of the form `YYYY-MM-DD-NNN-slug`. Each skill writes its records from the templates in
+its `templates/` directory. The [workflow contract](skills/xtask/references/workflow.md) defines
+handoffs and commits.
 
 ## Planning standard
 
-Work size and explanation detail are separate judgments. Small tasks use briefs;
-large requests need smaller execution assignments and, when useful, shared design.
-Consequential decisions must be resolved before implementation.
-
-The [normalization rubric](skills/xplan/references/normalization.md) starts
-with an **experimental 600–1,500-word** execution-plan band. It is an inspection
-signal, not a validated optimum or an effort estimate. Padding and removing
-necessary constraints do not repair a plan. The bundled
-[metrics helper](skills/xplan/scripts/plan_metrics.py) measures saved plans
-and can use explicitly curated project references.
+Small tasks use briefs, short plan files of at most 400 words. A plan is at
+most 1,500 words; larger requests are split into execution units, each with its
+own plan. Consequential decisions are resolved before implementation.

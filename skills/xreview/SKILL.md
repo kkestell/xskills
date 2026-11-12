@@ -1,48 +1,29 @@
 ---
 name: xreview
-description: Independently review an implementation with xreview LOG, reading the actual code, tests and their hygiene, clarity, user interface design and conformance to the plan or brief in the task checkout's uncommitted change. Write a linked .agents/reviews record without editing the reviewed code. Use only when invoked or explicitly requested, including delegation by xauto.
+description: Independently review an implementation with xreview LOG, reading the actual code, tests and their hygiene, clarity, user interface design and conformance to the plan or brief in the task checkout's uncommitted change. Write a linked .agents/reviews record without editing the reviewed code. Use only when invoked or explicitly requested, including delegation by xtask.
 ---
 
 # Review an implementation
 
-Read `../xauto/references/workflow.md` for shared IDs, `.agents/` paths and Git
-ownership. Install all four x-skills together.
-
-## Dispatch explicitly
+Read `../xtask/references/workflow.md` for IDs, paths and Git rules, and
+`references/review.md` for what to review.
 
 ```text
 xreview <work log filename>
 ```
 
-Require a target. If it is absent or ambiguous, ask; do not guess from the latest
-file, current branch or staged changes. A bare filename resolves in
-`.agents/work/`; an explicit path is read exactly, including legacy inputs outside
-that directory. Do not move or overwrite an input merely to normalize its path.
+Require a target; if it is absent or ambiguous, ask. A bare filename resolves
+in `.agents/work/`; an explicit path is read exactly. The work log locates the
+task; it does not replace reading the code.
 
-Read `references/review.md`. The work log locates the task; it
-is not a substitute for inspecting the actual implementation. Write
-`.agents/reviews/ID.md` from `templates/review.md`; a later round appends its
-`## Round N` section to the existing file.
+Write `.agents/reviews/ID.md` from `templates/review.md`, reusing the task ID.
+A later round appends `## Round N` and records how each earlier finding was
+resolved.
 
-Reuse the task ID. For an input without a usable ID, allocate one by the shared
-contract and record the original path. Append numbered rounds rather than replacing previous evidence or approval. Preserve
-prior findings and explicitly record whether and how each was resolved.
+Under xtask, the reviewer is never the implementer. Standalone xreview may be
+a self-review if the user chose that, and says so. Write only the review
+record: do not fix code, stage, commit or delegate.
 
-## Independence and authority
-
-Under xauto, be a distinct worker from the implementation's author. Standalone
-xreview may be a self-review if the user chose that context, but must disclose
-that limitation instead of claiming independence. Do not delegate another review
-or launch a worker unless separately authorized.
-
-Read/investigate/run appropriate checks, and write only the review record. Do
-not fix code, stage or commit. Return findings to the implementer; the parent
-handles review loops and the final commit.
-
-The handoff must include exact input/output paths, verdict,
-actionable findings, checks run or reused with their evidence sources, session
-provenance (including native conversation ID), and limitations. Keep acceptance
-reports concise using the shared contract: preserve the assessment,
-not a repeated tour of the implementation. `accept` cannot coexist with
-unresolved required corrections or blockers. Neither a clean tree nor a worker's
-successful summary establishes correctness.
+Return the review path, verdict, blocking findings, plan findings, notes,
+checks run or reused, and limitations. `accept` cannot coexist with an
+unresolved blocking finding.

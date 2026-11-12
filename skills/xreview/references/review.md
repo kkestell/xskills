@@ -3,13 +3,15 @@
 ## Establish the exact change
 
 Read the work log, original request or preserved brief, plan when supplied,
-referenced design/dependencies, and repository instructions.
+the plans of its dependencies, and repository instructions.
 Confirm the task ID and repository. Do not infer the task from recent commits
 or the plan's filename.
 
-The change is uncommitted in the task checkout. Inspect `git status`,
-`git diff HEAD` and every untracked file it lists. On a repair round, focus first
-on what the fix touched, but review the whole change. Include tests, build and deployment
+The change is the current unit's uncommitted work in the task checkout;
+earlier units are already committed. Inspect `git status`, `git diff HEAD` and
+every untracked file it lists. A re-review covers the fix and what it
+interacts with, and records how each earlier finding was resolved; it does not
+review the whole change again. Include tests, build and deployment
 configuration and source under `.agents/skills/` where relevant. Only explicitly
 identified workflow records are excluded from code analysis. Look at complete
 touched files, callers and contracts, not only added lines.
@@ -19,8 +21,10 @@ touched files, callers and contracts, not only added lines.
 1. **Required outcomes:** trace each requested behavior and consequential plan
    decision through the actual code. Check omissions, accidental scope expansion,
    altered semantics and deviations. A plan is not authorization for invented
-   extra work. A plan defect discovered here still needs correction; implementation
-   conformity does not excuse an incorrect design.
+   extra work. When the plan itself, or a decision the user settled, looks
+   wrong, report it as a plan finding: the evidence and the consequence. Plan
+   findings go to the user, not to the implementer, and do not block acceptance
+   of code that carries out the plan faithfully.
 2. **Correctness and integration:** follow data/control flow, ownership and
    lifetimes, errors, state transitions, algorithm invariants and external
    contracts where relevant. Investigate uncertainties that could change the
@@ -33,28 +37,19 @@ touched files, callers and contracts, not only added lines.
    dead code and mechanisms unsupported by the request. Do not prescribe a large
    redesign merely to satisfy a stylistic preference.
 4. **Verification:** inspect real assertions and fixtures, not test names or the
-   log's pass claims. Check behavior, regressions and feasible failure scenarios;
-   invalid/unspecified-behavior examples are not proof. First inspect the existing
-   check evidence and confirm it applies to the current code, relevant
-   environment and required coverage, including fixes/integration. Follow the
-   shared verification-reuse policy: reuse sufficient matching evidence unless
-   fresh execution is explicitly required. Independent reasoning and inspection
-   remain mandatory even when command results are reused.
-   For a concrete coverage gap, doubtful result or remaining correctness question,
-   run a focused regression or broader check that addresses it and say why. Do
-   not routinely rerun both focused repetitions and a full suite/build. Inspect
-   docs-only changes without builds unless instructions require them. Missing
-   usable evidence for a required check must be obtained, not waived.
-5. **History and handoff:** verify the recorded plan and linked-guidance blobs,
-   and the log's
-   scope/check claims. Separate missing implementation, an implementation defect
-   despite clear guidance, incorrect plan guidance, and missing evidence. No
-   word-count target applies to code, work logs or review reports.
+   log's pass claims. Check behavior, regressions and feasible failure
+   scenarios. Reuse the work log's check results when they apply to the
+   current code. Run a check only for a concrete coverage gap, doubtful result
+   or open correctness question, and say why. Missing evidence for a required
+   check must be obtained, not waived.
+5. **The log's claims:** check its scope and check claims against the code.
+   Separate missing implementation, a defect despite clear guidance, wrong plan
+   guidance, and missing evidence.
 
 Do not let unrelated legacy defects expand the review into a repository-wide
 audit. Relevant pre-existing code that makes the changed behavior unsafe or
 unreadable is not exempt merely because it was not added in this diff. Explain
-that relationship and return any material scope decision to the parent/user.
+that relationship and return any material scope decision to the coordinator or user.
 
 ## Review user interface design
 
@@ -155,13 +150,13 @@ product code: a slow, flaky or leaky suite is a defect.
 
 ## Findings and verdict
 
-Append a round to `.agents/reviews/ID.md` with the shared metadata. Include:
+Append a round to `.agents/reviews/ID.md` from the template. Include:
 
 - **Reviewed change:** checkout and branch, request/plan/brief and work-log
   paths.
 - **Verdict:** `accept`, `changes-required`, or `blocked`; concise reasons and
   an explicit independence statement.
-- **Findings:** stable identifiers, priority, exact path/line or symbol, concrete
+- **Findings:** blocking findings only, with stable identifiers, priority, exact path/line or symbol, concrete
   defect/consequence, supporting evidence, and the smallest coherent correction.
   Correctness findings should describe a real failure or violated invariant;
   clarity findings should show what is hard to follow and how to simplify it.
@@ -174,17 +169,20 @@ Append a round to `.agents/reviews/ID.md` with the shared metadata. Include:
   evidence in the current code; identify remaining issues and any new findings.
   An empty new-finding list is not evidence that old findings were fixed.
 
-For a no-findings round, say so and give a brief independent justification of
-the difficult invariants, not a second implementation walkthrough. Keep
-author/native-session provenance, check sources and limitations. Do not
-add empty findings/resolution sections or restate the plan to make the review
-look thorough. Substantive findings and necessary proof may take more space.
+For a no-findings round, say so and give a brief justification of the
+difficult invariants, not a second implementation walkthrough. Leave out empty
+sections and do not restate the plan.
 
-Every material finding, including hard-to-follow touched code, prevents acceptance.
-Informational observations may be separate notes, not silently deferred defects.
+Only blocking findings prevent acceptance. A finding blocks when it shows a
+real failure, data loss, a broken contract or settled decision, a failed or
+missing required check, or touched code too hard to follow to maintain safely.
+Everything else goes under Notes, including tests for unlikely paths and
+polish, and does not affect the verdict. A re-review judges only the fix: it
+blocks on a blocking defect the fix introduced or left unresolved, and records
+anything lesser as a note.
 Missing evidence for a required check blocks acceptance, but lack of unrelated
 environment/context is not automatically a design or code defect.
 
 Return the report to the caller. Do not make the fixes, stage or commit
-anything. Under xauto the parent routes fixes to xwork and obtains review of the
-full updated change.
+anything. Under xtask the coordinator routes blocking findings to the
+implementer and sends the fix back to you for one focused re-review.

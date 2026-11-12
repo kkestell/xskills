@@ -3,8 +3,6 @@
 ## Round <N>
 
 - Task: `<YYYY-MM-DD-NNN-slug>`
-- Author: <role/name>, <harness>, <model/effort>; coordinator ID `<id>`;
-  native conversation ID `<id or "unavailable: reason">`
 - Independence: <"I did not write this code; the implementer was <name>.", or
   the self-review disclosure>
 - Reviewed change: <checkout and branch>; request/plan/brief `<path>`; work log
@@ -16,9 +14,16 @@
 
 ### Findings
 
+<Blocking findings only.>
+
 1. **<Priority>: <one-line defect>.** `<path>:<line>` or `<symbol>`.
    <Concrete failure or violated invariant, the evidence for it, and the
    smallest coherent correction.>
+
+### Plan findings
+
+<Evidence that the plan or a settled decision is wrong, and its consequence.
+These go to the user and do not affect the verdict.>
 
 ### Resolution of earlier findings
 
@@ -28,7 +33,8 @@
 
 ### Notes
 
-- <Informational observation that does not block acceptance.>
+- <Non-blocking issue, such as a test for an unlikely path or polish, with its
+  location and suggested change.>
 
 ### Verification
 
@@ -37,5 +43,5 @@
 - Reused: `<exact command>`: <result>, from <work log or evidence location>.
 - Not run: <required check and the reason, or omit this line>.
 
-<Omit Findings, Resolution and Notes when empty. A no-findings round replaces
+<Omit Findings, Plan findings, Resolution and Notes when empty. A no-findings round replaces
 Findings with a brief justification of the difficult invariants.>

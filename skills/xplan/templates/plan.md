@@ -1,11 +1,9 @@
 # <Plan title: the change, stated as an outcome>
 
 - Task: `<YYYY-MM-DD-NNN-slug>`
-- Status: <draft | ready | blocked | superseded>
+- Kind: <plan | brief>
+- Status: <ready | blocked | superseded>
 - Source HEAD: `<full commit ID>`
-- Author: <role/name>, <harness>, <model/effort>; coordinator ID `<id>`;
-  native conversation ID `<id or "unavailable: reason">`
-- Shared design: <`.agents/designs/ID.md`, or "none">
 - Dependencies: <task IDs this plan needs first, or "none">
 
 ## Outcome and boundaries
@@ -24,6 +22,15 @@ existing behavior to preserve. Cite what you inspected.>
 failure behavior. State each decision and, for a consequential one, the
 alternative rejected and why.>
 
+## Check your assumptions
+
+<Most consequential first, usually three to seven, or "None.". Once the user
+has settled the list, mark each entry kept or changed, and to what.>
+
+1. **<Consequence the user will notice.>** <The decision or assumption that
+   causes it.> <The alternative given up.> <The evidence, in a sentence.>
+2. <...>
+
 ## Implementation sequence
 
 1. <Concrete change tied to paths/symbols, and the behavior that results.>
@@ -34,8 +41,3 @@ alternative rejected and why.>
 - <Acceptance case, regression or failure path, and where its test belongs.>
 - Commands: `<runnable check>`
 - Manual: <required manual check, or omit this line>
-
-## Handoff
-
-<Readiness, work-size assessment, detail assessment, and plan_metrics.py result.
-A blocked plan names the exact decision or evidence it needs.>

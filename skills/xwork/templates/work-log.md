@@ -2,12 +2,8 @@
 
 - Task: `<YYYY-MM-DD-NNN-slug>`
 - Status: <implemented | blocked | complete>
-- Plan: `<.agents/plans/ID.md>`, blob `<git hash-object of the plan as read>`
-- Guidance blobs: <`path` `blob` for each linked design or guidance read, or "none">
+- Plan: `<.agents/plans/ID.md>`
 - Review: <`.agents/reviews/ID.md`, once one exists>
-
-For work from a brief instead of a plan, replace the Plan and Guidance lines
-with the full brief and the reason planning was skipped.
 
 ## Changes
 
@@ -24,15 +20,9 @@ Changed paths:
 
 ## Verification
 
-| Command | Result | Environment | Evidence |
-| --- | --- | --- | --- |
-| `<exact command>` | <passed / failed: summary> | <OS, tool versions where relevant> | <log path or conversation tool result> |
-
-## Session provenance
-
-| Stage | Role/name | Coordinator ID | Harness | Model/effort | Native conversation ID |
-| --- | --- | --- | --- | --- | --- |
-| work | <name> | `<id>` | <harness> | <model/effort> | `<id or "unavailable: reason">` |
+| Command | Result | Evidence |
+| --- | --- | --- |
+| `<exact command>` | <passed / failed: summary> | <log path> |
 
 ## Limitations
 
